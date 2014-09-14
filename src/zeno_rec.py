@@ -16,9 +16,9 @@ class StartQT4(QtGui.QMainWindow):
 'l_hip_yaw', 'l_hip_roll', 'l_hip_pitch', 'l_knee_pitch', 'l_ankle_pitch', 'l_ankle_roll']
     motorNamesAndCat={'r_hip_yaw':'r', 'r_hip_roll':'r', 'r_hip_pitch':'r', 'r_knee_pitch':'r', 'r_ankle_pitch':'r', 'r_ankle_roll':'r',
 'l_hip_yaw':'l', 'l_hip_roll':'l', 'l_hip_pitch':'l', 'l_knee_pitch':'l', 'l_ankle_pitch':'l', 'l_ankle_roll':'l'}#as in yaml array of tuple name,left or right
-    motorPositionTopics=[]#List
-    motorTorqueServices=[]#List
-    motorTorqueStates=[]#bool List
+    # motorPositionTopics=[]#List
+    # motorTorqueServices=[]#List
+    # motorTorqueStates=[]#bool List
     motorTrajectoryTopics=[]#dictionary category:TrajectoryTopic
 
     totalFrames=1
@@ -63,24 +63,25 @@ class StartQT4(QtGui.QMainWindow):
         self.ui.chkRA.setEnabled(False)
         self.ui.chkLA.setEnabled(False)
 
-        QtCore.QObject.connect(self.ui.btnRec,QtCore.SIGNAL("clicked()"),self.btnRec)
-        QtCore.QObject.connect(self.ui.btnDelCurrent,QtCore.SIGNAL("clicked()"),self.btnDelCurrent)
-        QtCore.QObject.connect(self.ui.btnDel,QtCore.SIGNAL("clicked()"),self.btnDel)
-        QtCore.QObject.connect(self.ui.btnCopy,QtCore.SIGNAL("clicked()"),self.btnCopy)
-        QtCore.QObject.connect(self.ui.btnFirst,QtCore.SIGNAL("clicked()"),self.btnFirst)
-        QtCore.QObject.connect(self.ui.btnLast,QtCore.SIGNAL("clicked()"),self.btnLast)
-        QtCore.QObject.connect(self.ui.btnSave,QtCore.SIGNAL("clicked()"),self.btnSave)
-        QtCore.QObject.connect(self.ui.btnSaveAs,QtCore.SIGNAL("clicked()"),self.btnSaveAs)
-        QtCore.QObject.connect(self.ui.btnLoad,QtCore.SIGNAL("clicked()"),self.btnLoad)
-        QtCore.QObject.connect(self.ui.btnImport,QtCore.SIGNAL("clicked()"),self.btnImport)
-        QtCore.QObject.connect(self.ui.btnInsert,QtCore.SIGNAL("clicked()"),self.btnInsert)
-        QtCore.QObject.connect(self.ui.btnSetFrame,QtCore.SIGNAL("clicked()"),self.btnSetFrame)
-        QtCore.QObject.connect(self.ui.btnPlay,QtCore.SIGNAL("clicked()"),self.btnPlay)
+        # QtCore.QObject.connect(self.ui.btnRec,QtCore.SIGNAL("clicked()"),self.btnRec)
+        # QtCore.QObject.connect(self.ui.btnDelCurrent,QtCore.SIGNAL("clicked()"),self.btnDelCurrent)
+        # QtCore.QObject.connect(self.ui.btnDel,QtCore.SIGNAL("clicked()"),self.btnDel)
+        # QtCore.QObject.connect(self.ui.btnCopy,QtCore.SIGNAL("clicked()"),self.btnCopy)
+        # QtCore.QObject.connect(self.ui.btnFirst,QtCore.SIGNAL("clicked()"),self.btnFirst)
+        # QtCore.QObject.connect(self.ui.btnLast,QtCore.SIGNAL("clicked()"),self.btnLast)
+        # QtCore.QObject.connect(self.ui.btnSave,QtCore.SIGNAL("clicked()"),self.btnSave)
+        # QtCore.QObject.connect(self.ui.btnSaveAs,QtCore.SIGNAL("clicked()"),self.btnSaveAs)
+        # QtCore.QObject.connect(self.ui.btnLoad,QtCore.SIGNAL("clicked()"),self.btnLoad)
+        # QtCore.QObject.connect(self.ui.btnImport,QtCore.SIGNAL("clicked()"),self.btnImport)
+        # QtCore.QObject.connect(self.ui.btnInsert,QtCore.SIGNAL("clicked()"),self.btnInsert)
+        # QtCore.QObject.connect(self.ui.btnSetFrame,QtCore.SIGNAL("clicked()"),self.btnSetFrame)
+        # QtCore.QObject.connect(self.ui.btnPlay,QtCore.SIGNAL("clicked()"),self.btnPlay)
 
         rospy.init_node("zeno_walk_tool")
 
         self.joint_positions = list(repeat(0.0, 12))
         self.joint_velocities = list(repeat(0.0, 12))
+        # self.motorTorqueStates=list(repeat(False,12))
         for name in self.names:
             controller = name + '_controller/state'
             rospy.loginfo(controller)
@@ -94,31 +95,31 @@ class StartQT4(QtGui.QMainWindow):
         self.joint_velocities[joint_index] = msg.velocity
         #print to check updated joint pos?
 
-    def btnRec(self):
-
-    def btnDelCurrent(self):
-
-    def btnDel(self):
-
-    def btnCopy(self):
-
-    def btnFirst(self):
-
-    def btnLast(self):
-
-    def btnSave(self):
-
-    def btnSaveAs(self):
-
-    def btnLoad(self):
-
-    def btnImport(self):
-
-    def btnInsert(self):
-
-    def btnSetFrame(self):
-
-    def btnPlay(self):
+    # def btnRec(self):
+    #
+    # def btnDelCurrent(self):
+    #
+    # def btnDel(self):
+    #
+    # def btnCopy(self):
+    #
+    # def btnFirst(self):
+    #
+    # def btnLast(self):
+    #
+    # def btnSave(self):
+    #
+    # def btnSaveAs(self):
+    #
+    # def btnLoad(self):
+    #
+    # def btnImport(self):
+    #
+    # def btnInsert(self):
+    #
+    # def btnSetFrame(self):
+    #
+    # def btnPlay(self):
 
     def setAllTorque(self,stt):
         for name in self.names:
