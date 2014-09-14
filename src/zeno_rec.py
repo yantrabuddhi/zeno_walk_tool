@@ -1,14 +1,21 @@
 __author__ = 'mandeep'
 
 # -*- coding: utf-8 -*-
+import rospy
 import sys
 from PyQt4 import QtCore, QtGui
 from UI_zeno_rec import Ui_zeno_rec
+from dynamixel_controllers.srv import TorqueEnable
+from dynamixel_msgs.msg import JointState as DynamixelJointState
+from itertools import repeat
 
 
 class StartQT4(QtGui.QMainWindow):
     numMotors=12
-    motorNamesAndCat=[]#as in yaml array of tuple name,left or right
+    names = ['r_hip_yaw', 'r_hip_roll', 'r_hip_pitch', 'r_knee_pitch', 'r_ankle_pitch', 'r_ankle_roll',
+'l_hip_yaw', 'l_hip_roll', 'l_hip_pitch', 'l_knee_pitch', 'l_ankle_pitch', 'l_ankle_roll']
+    motorNamesAndCat={'r_hip_yaw':'r', 'r_hip_roll':'r', 'r_hip_pitch':'r', 'r_knee_pitch':'r', 'r_ankle_pitch':'r', 'r_ankle_roll':'r',
+'l_hip_yaw':'l', 'l_hip_roll':'l', 'l_hip_pitch':'l', 'l_knee_pitch':'l', 'l_ankle_pitch':'l', 'l_ankle_roll':'l'}#as in yaml array of tuple name,left or right
     motorPositionTopics=[]#List
     motorTorqueServices=[]#List
     motorTorqueStates=[]#bool List
@@ -70,6 +77,23 @@ class StartQT4(QtGui.QMainWindow):
         QtCore.QObject.connect(self.ui.btnSetFrame,QtCore.SIGNAL("clicked()"),self.btnSetFrame)
         QtCore.QObject.connect(self.ui.btnPlay,QtCore.SIGNAL("clicked()"),self.btnPlay)
 
+        rospy.init_node("zeno_walk_tool")
+
+        self.joint_positions = list(repeat(0.0, 12))
+        self.joint_velocities = list(repeat(0.0, 12))
+        for name in self.names:
+            controller = name + '_controller/state'
+            rospy.loginfo(controller)
+            rospy.Subscriber(controller, DynamixelJointState, self.update_dynamixel_joint_state)
+
+        self.setAllTorque(False)
+
+    def update_dynamixel_joint_state(self, msg):
+        joint_index = msg.motor_ids[0] - 1
+        self.joint_positions[joint_index] = msg.current_pos
+        self.joint_velocities[joint_index] = msg.velocity
+        #print to check updated joint pos?
+
     def btnRec(self):
 
     def btnDelCurrent(self):
@@ -95,6 +119,18 @@ class StartQT4(QtGui.QMainWindow):
     def btnSetFrame(self):
 
     def btnPlay(self):
+
+    def setAllTorque(self,stt):
+        for name in self.names:
+            self.setMotorTorque(name,stt)
+
+    def setMotorTorque(self,name,stt):
+        service_name = name + '_controller/torque_enable'
+        torque_enable_srv = rospy.ServiceProxy(service_name, TorqueEnable)
+        rospy.loginfo("Waiting for {0} service".format(service_name))
+        rospy.wait_for_service(service_name)
+        rospy.loginfo("{0} service found".format(service_name))
+        torque_enable_srv(stt)
 
     def stopAll(self,stt):
         istt=not stt
@@ -133,61 +169,73 @@ class StartQT4(QtGui.QMainWindow):
 
     def chkR1(self,stt):
         print("chkR1="+str(stt))
+        self.setMotorTorque(self.names[0],stt)
         if not stt:
             self.ui.chkRA.setChecked(stt)
 
     def chkR2(self,stt):
         print("chkR2="+str(stt))
+        self.setMotorTorque(self.names[1],stt)
         if not stt:
             self.ui.chkRA.setChecked(stt)
 
     def chkR3(self,stt):
         print("chkR3="+str(stt))
+        self.setMotorTorque(self.names[2],stt)
         if not stt:
             self.ui.chkRA.setChecked(stt)
 
     def chkR4(self,stt):
         print("chkR4="+str(stt))
+        self.setMotorTorque(self.names[3],stt)
         if not stt:
             self.ui.chkRA.setChecked(stt)
 
     def chkR5(self,stt):
         print("chkR5="+str(stt))
+        self.setMotorTorque(self.names[4],stt)
         if not stt:
             self.ui.chkRA.setChecked(stt)
 
     def chkR6(self,stt):
         print("chkR6="+str(stt))
+        self.setMotorTorque(self.names[5],stt)
         if not stt:
             self.ui.chkRA.setChecked(stt)
 
     def chkL7(self,stt):
         print("chkL7="+str(stt))
+        self.setMotorTorque(self.names[6],stt)
         if not stt:
             self.ui.chkLA.setChecked(stt)
 
     def chkL8(self,stt):
         print("chkL8="+str(stt))
+        self.setMotorTorque(self.names[7],stt)
         if not stt:
             self.ui.chkLA.setChecked(stt)
 
     def chkL9(self,stt):
         print("chkL9="+str(stt))
+        self.setMotorTorque(self.names[8],stt)
         if not stt:
             self.ui.chkLA.setChecked(stt)
 
     def chkL10(self,stt):
         print("chkL10="+str(stt))
+        self.setMotorTorque(self.names[9],stt)
         if not stt:
             self.ui.chkLA.setChecked(stt)
 
     def chkL11(self,stt):
         print("chkL11="+str(stt))
+        self.setMotorTorque(self.names[10],stt)
         if not stt:
             self.ui.chkLA.setChecked(stt)
 
     def chkL12(self,stt):
         print("chkL12="+str(stt))
+        self.setMotorTorque(self.names[11],stt)
         if not stt:
             self.ui.chkLA.setChecked(stt)
 
