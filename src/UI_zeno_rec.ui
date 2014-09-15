@@ -1086,10 +1086,10 @@ keyframe(m.sec):</string>
   <widget class="QPushButton" name="btnStopAll">
    <property name="geometry">
     <rect>
-     <x>360</x>
-     <y>580</y>
+     <x>470</x>
+     <y>610</y>
      <width>141</width>
-     <height>51</height>
+     <height>31</height>
     </rect>
    </property>
    <property name="text">

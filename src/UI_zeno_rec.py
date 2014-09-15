@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'UI_zeno_rec.ui'
 #
-# Created: Mon Sep 15 21:07:20 2014
+# Created: Mon Sep 15 22:12:09 2014
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -290,7 +290,7 @@ class Ui_zeno_rec(object):
         self.lblFile.setGeometry(QtCore.QRect(50, 580, 551, 17))
         self.lblFile.setObjectName(_fromUtf8("lblFile"))
         self.btnStopAll = QtGui.QPushButton(zeno_rec)
-        self.btnStopAll.setGeometry(QtCore.QRect(360, 580, 141, 51))
+        self.btnStopAll.setGeometry(QtCore.QRect(470, 610, 141, 31))
         self.btnStopAll.setCheckable(True)
         self.btnStopAll.setChecked(True)
         self.btnStopAll.setObjectName(_fromUtf8("btnStopAll"))
