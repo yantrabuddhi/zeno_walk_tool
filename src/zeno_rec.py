@@ -93,9 +93,10 @@ class StartQT4(QtGui.QMainWindow):
         QtCore.QObject.connect(self.ui.btnPrevious,QtCore.SIGNAL("clicked()"),self.btnPrevious)
         QtCore.QObject.connect(self.ui.btnNext,QtCore.SIGNAL("clicked()"),self.btnNext)
         QtCore.QObject.connect(self.ui.btnSave,QtCore.SIGNAL("clicked()"),self.btnSave)
-        # QtCore.QObject.connect(self.ui.btnSaveAs,QtCore.SIGNAL("clicked()"),self.btnSaveAs)
-        # QtCore.QObject.connect(self.ui.btnLoad,QtCore.SIGNAL("clicked()"),self.btnLoad)
-        # QtCore.QObject.connect(self.ui.btnImport,QtCore.SIGNAL("clicked()"),self.btnImport)
+        QtCore.QObject.connect(self.ui.btnSaveAs,QtCore.SIGNAL("clicked()"),self.btnSaveAs)
+        QtCore.QObject.connect(self.ui.btnLoad,QtCore.SIGNAL("clicked()"),self.btnLoad)
+        QtCore.QObject.connect(self.ui.btnPrintCurrent,QtCore.SIGNAL("clicked()"),self.btnPrintCurrent)
+        QtCore.QObject.connect(self.ui.btnImport,QtCore.SIGNAL("clicked()"),self.btnImport)
         # QtCore.QObject.connect(self.ui.btnPlay,QtCore.SIGNAL("clicked()"),self.btnPlay)
 
         rospy.init_node("zeno_walk_tool")
@@ -189,8 +190,16 @@ class StartQT4(QtGui.QMainWindow):
             self.setFrameBtnState()
 
 
-    # def btnPrintCurrent(self):
-    #
+    def printFrame(self,n):
+        print("\nFrame="+str(n))
+        print("\nPrevious Delay(ms)="+str(self.TimeDelayFromPrevious[n-1])+"\n")
+        print("motor positions(radians):\n")
+        for name in self.names:
+            print(name+": "+str(self.TrajectoryInfo[name][n-1])+"\n")
+
+    def btnPrintCurrent(self):
+        self.printFrame(self.currentFrame)
+
     # def btnPlay(self):
     #
     def btnSave(self):
