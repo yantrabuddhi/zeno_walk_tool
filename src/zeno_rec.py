@@ -12,10 +12,18 @@ from itertools import repeat
 
 class StartQT4(QtGui.QMainWindow):
     numMotors=12
-    names = ['r_hip_yaw', 'r_hip_roll', 'r_hip_pitch', 'r_knee_pitch', 'r_ankle_pitch', 'r_ankle_roll',
-'l_hip_yaw', 'l_hip_roll', 'l_hip_pitch', 'l_knee_pitch', 'l_ankle_pitch', 'l_ankle_roll']
-    motorNamesAndCat={'r_hip_yaw':'r', 'r_hip_roll':'r', 'r_hip_pitch':'r', 'r_knee_pitch':'r', 'r_ankle_pitch':'r', 'r_ankle_roll':'r',
-'l_hip_yaw':'l', 'l_hip_roll':'l', 'l_hip_pitch':'l', 'l_knee_pitch':'l', 'l_ankle_pitch':'l', 'l_ankle_roll':'l'}#as in yaml array of tuple name,left or right
+    names = [
+        'r_hip_yaw', 'r_hip_roll', 'r_hip_pitch', 'r_knee_pitch', 'r_ankle_pitch', 'r_ankle_roll',
+        'l_hip_yaw', 'l_hip_roll', 'l_hip_pitch', 'l_knee_pitch', 'l_ankle_pitch', 'l_ankle_roll'
+    ]
+    motorNamesAndCat={
+        'r_hip_yaw':'r', 'r_hip_roll':'r', 'r_hip_pitch':'r', 'r_knee_pitch':'r', 'r_ankle_pitch':'r', 'r_ankle_roll':'r',
+        'l_hip_yaw':'l', 'l_hip_roll':'l', 'l_hip_pitch':'l', 'l_knee_pitch':'l', 'l_ankle_pitch':'l', 'l_ankle_roll':'l'
+    }#as in yaml array of tuple name,left or right
+    nameAndIdIndex={
+        'r_hip_yaw':1,'r_hip_roll':2, 'r_hip_pitch':3, 'r_knee_pitch':4, 'r_ankle_pitch':5, 'r_ankle_roll':6,
+        'l_hip_yaw':7, 'l_hip_roll':8, 'l_hip_pitch':9, 'l_knee_pitch':10, 'l_ankle_pitch':11, 'l_ankle_roll':12
+    }
     # motorPositionTopics=[]#List
     # motorTorqueServices=[]#List
     # motorTorqueStates=[]#bool List
@@ -23,6 +31,11 @@ class StartQT4(QtGui.QMainWindow):
 
     totalFrames=1
     currentFrame=1
+    TrajectoryInfo={
+        'r_hip_yaw':[], 'r_hip_roll':[], 'r_hip_pitch':[], 'r_knee_pitch':[], 'r_ankle_pitch':[], 'r_ankle_roll':[],
+        'l_hip_yaw':[], 'l_hip_roll':[], 'l_hip_pitch':[], 'l_knee_pitch':[], 'l_ankle_pitch':[], 'l_ankle_roll':[]
+    }
+    TimeDelayFromPrevious=[]
 
     def __init__(self, parent=None):
         QtGui.QWidget.__init__(self, parent)
@@ -47,6 +60,10 @@ class StartQT4(QtGui.QMainWindow):
         QtCore.QObject.connect(self.ui.btnStopAll,QtCore.SIGNAL("toggled(bool)"),self.stopAll)
 
         self.ui.btnRec.setEnabled(self.ui.chkAllMotors.isChecked())
+        self.totalFrames=0
+        self.currentFrame=0
+        self.btnInsert()
+
         self.ui.chkAllMotors.setEnabled(False)
         self.ui.chkR1.setEnabled(False)
         self.ui.chkR2.setEnabled(False)
@@ -63,12 +80,14 @@ class StartQT4(QtGui.QMainWindow):
         self.ui.chkRA.setEnabled(False)
         self.ui.chkLA.setEnabled(False)
 
-        # QtCore.QObject.connect(self.ui.btnRec,QtCore.SIGNAL("clicked()"),self.btnRec)
-        # QtCore.QObject.connect(self.ui.btnDelCurrent,QtCore.SIGNAL("clicked()"),self.btnDelCurrent)
+        QtCore.QObject.connect(self.ui.btnRec,QtCore.SIGNAL("clicked()"),self.btnRec)
+        QtCore.QObject.connect(self.ui.btnDelCurrent,QtCore.SIGNAL("clicked()"),self.btnDelCurrent)
         # QtCore.QObject.connect(self.ui.btnDel,QtCore.SIGNAL("clicked()"),self.btnDel)
         # QtCore.QObject.connect(self.ui.btnCopy,QtCore.SIGNAL("clicked()"),self.btnCopy)
         # QtCore.QObject.connect(self.ui.btnFirst,QtCore.SIGNAL("clicked()"),self.btnFirst)
         # QtCore.QObject.connect(self.ui.btnLast,QtCore.SIGNAL("clicked()"),self.btnLast)
+        # QtCore.QObject.connect(self.ui.btnPrevious,QtCore.SIGNAL("clicked()"),self.btnPrevious)
+        # QtCore.QObject.connect(self.ui.btnNext,QtCore.SIGNAL("clicked()"),self.btnNext)
         # QtCore.QObject.connect(self.ui.btnSave,QtCore.SIGNAL("clicked()"),self.btnSave)
         # QtCore.QObject.connect(self.ui.btnSaveAs,QtCore.SIGNAL("clicked()"),self.btnSaveAs)
         # QtCore.QObject.connect(self.ui.btnLoad,QtCore.SIGNAL("clicked()"),self.btnLoad)
@@ -92,20 +111,81 @@ class StartQT4(QtGui.QMainWindow):
     def update_dynamixel_joint_state(self, msg):
         joint_index = msg.motor_ids[0] - 1
         self.joint_positions[joint_index] = msg.current_pos
-        self.joint_velocities[joint_index] = msg.velocity
-        #print to check updated joint pos?
+        # self.joint_velocities[joint_index] = msg.velocity
+        # print(str(joint_index)+":"+str(self.joint_positions[joint_index])+"\n")
 
-    # def btnRec(self):
-    #
-    # def btnDelCurrent(self):
-    #
-    # def btnDel(self):
-    #
-    # def btnCopy(self):
-    #
-    # def btnFirst(self):
-    #
-    # def btnLast(self):
+    def setFrameBtnState(self):
+        if (self.currentFrame>=self.totalFrames):
+            self.currentFrame=self.totalFrames
+            self.ui.btnNext.setEnabled(False)
+        else:
+            self.ui.btnNext.setEnabled(True)
+
+        if (self.currentFrame<=1):
+            self.currentFrame=1
+            self.ui.btnPrevious.setEnabled(False)
+        else:
+            self.ui.btnPrevious.setEnabled(True)
+
+        self.ui.lblCurrFrame=str(self.currentFrame)
+        self.ui.lblFrameCount=str(self.totalFrames)
+
+    def btnRec(self):
+        self.TimeDelayFromPrevious[self.currentFrame]=self.ui.spinDelay.value()
+        for name in self.names:
+            self.TrajectoryInfo[name][self.currentFrame]=self.joint_positions[self.nameAndIdIndex[name]-1]
+
+    def btnDelCurrent(self):
+        if self.totalFrames>1:
+            self.TimeDelayFromPrevious.remove(self.currentFrame-1)#assuming frames start from 1 to n
+            for name in self.names:
+                self.TrajectoryInfo[name].remove(self.currentFrame-1)
+            self.totalFrames=self.totalFrames-1
+            self.setFrameBtnState()
+
+    def btnDel(self):
+        fcount=self.ui.spinDelTo.value()-self.ui.spinDelFrom.value()+1
+        if fcount<1:
+            return
+        if self.totalFrames>fcount and self.ui.spinDelFrom.value()>=1 and self.ui.spinDelTo.value()<=self.totalFrames:
+            for n in range(self.ui.spinDelTo.value(),self.ui.spinDelTo.value(),1):
+                self.TimeDelayFromPrevious.remove(n-1)#assuming frames start from 1 to n
+                for name in self.names:
+                    self.TrajectoryInfo[name].remove(n-1)
+            self.totalFrames=self.totalFrames-fcount
+            self.setFrameBtnState()
+
+
+    def btnCopy(self):
+        if self.ui.spinCopyStart>=self.ui.spinCopyStop:
+            return
+        if self.ui.spinCopyTo.value()<1 or self.ui.spinCopyTo.value()>self.totalFrames:
+            return
+        if self.ui.spinCopyStart.value()>=1 and self.ui.spinCopyStop.value()<=self.totalFrames:
+            #make a separate buffer
+            tempDelayArr=[]
+            tempTraj={}
+            for name in self.names:
+                tempTraj[name]=[]#pos
+
+            for n in range(self.ui.spinCopyStart.value(),self.ui.spinCopyStop.value(),1):
+                tempDelayArr.append(self.TimeDelayFromPrevious[n-1])
+                for name in self.names:
+                    tempTraj[name][n-self.ui.spinCopyStart.value()]=self.TrajectoryInfo[name][n]
+
+            for n in range(0,self.ui.spinCopyStop.value()-self.ui.spinCopyStart.value(),1):
+                newLoc=self.ui.spinCopyTo+n
+                if newLoc>self.totalFrames:
+                    self.TimeDelayFromPrevious.append(tempDelayArr[n])
+                    for name in self.names:
+                        self.TrajectoryInfo[name].append(tempTraj[n])
+                else:
+                    self.TimeDelayFromPrevious[newLoc]=tempDelayArr[n]
+                    for name in self.names:
+                        self.TrajectoryInfo[name][newLoc]=tempTraj[name][n]
+
+
+    # def btnPlay(self):
     #
     # def btnSave(self):
     #
@@ -115,11 +195,48 @@ class StartQT4(QtGui.QMainWindow):
     #
     # def btnImport(self):
     #
-    # def btnInsert(self):
-    #
-    # def btnSetFrame(self):
-    #
-    # def btnPlay(self):
+    def btnInsert(self):
+        #insert a blank record
+        if self.currentFrame==self.totalFrames:
+            if self.totalFrames>0:
+                self.TimeDelayFromPrevious.append(self.TimeDelayFromPrevious[self.currentFrame-1])
+            else:
+                self.TimeDelayFromPrevious.append(40)
+            for name in self.names:
+                if self.totalFrames>0:
+                    self.TrajectoryInfo[name].append(self.TrajectoryInfo[name][self.currentFrame-1])
+                else:
+                    self.TrajectoryInfo[name].append(0.0)
+        else:
+            self.TimeDelayFromPrevious.insert(self.currentFrame,40)
+            for name in self.names:
+                self.TrajectoryInfo[name].insert(self.currentFrame,0.0)
+
+        self.totalFrames=self.totalFrames+1
+        self.currentFrame=self.currentFrame+1
+        self.setFrameBtnState()
+        self.ui.spinDelay.setValue(self.TimeDelayFromPrevious[self.currentFrame-1])
+
+
+    def btnFirst(self):
+        self.currentFrame=1
+        self.setFrameBtnState()
+
+    def btnLast(self):
+        self.currentFrame=self.totalFrames
+        self.setFrameBtnState()
+
+    def btnPrevious(self):
+        self.currentFrame=self.currentFrame-1
+        self.setFrameBtnState()
+
+    def btnNext(self):
+        self.currentFrame=self.currentFrame+1
+        self.setFrameBtnState()
+
+    def btnSetFrame(self):
+        self.currentFrame=self.ui.spinSetFrame.value()
+        self.setFrameBtnState()
 
     def setAllTorque(self,stt):
         for name in self.names:

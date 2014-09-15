@@ -529,8 +529,8 @@
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
-     <x>10</x>
-     <y>400</y>
+     <x>20</x>
+     <y>410</y>
      <width>141</width>
      <height>41</height>
     </rect>
@@ -543,8 +543,8 @@ keyframe(m.sec):</string>
   <widget class="QSpinBox" name="spinDelay">
    <property name="geometry">
     <rect>
-     <x>170</x>
-     <y>410</y>
+     <x>180</x>
+     <y>420</y>
      <width>71</width>
      <height>27</height>
     </rect>
@@ -562,8 +562,8 @@ keyframe(m.sec):</string>
   <widget class="QSpinBox" name="spinSetFrame">
    <property name="geometry">
     <rect>
-     <x>170</x>
-     <y>450</y>
+     <x>160</x>
+     <y>490</y>
      <width>91</width>
      <height>27</height>
     </rect>
@@ -575,9 +575,9 @@ keyframe(m.sec):</string>
   <widget class="QPushButton" name="btnInsert">
    <property name="geometry">
     <rect>
-     <x>300</x>
+     <x>290</x>
      <y>450</y>
-     <width>131</width>
+     <width>141</width>
      <height>27</height>
     </rect>
    </property>
@@ -588,21 +588,21 @@ keyframe(m.sec):</string>
   <widget class="QPushButton" name="btnDelCurrent">
    <property name="geometry">
     <rect>
-     <x>440</x>
+     <x>450</x>
      <y>450</y>
-     <width>98</width>
+     <width>161</width>
      <height>27</height>
     </rect>
    </property>
    <property name="text">
-    <string>Delete Frame</string>
+    <string>Delete Current Frame</string>
    </property>
   </widget>
   <widget class="QPushButton" name="btnFirst">
    <property name="geometry">
     <rect>
-     <x>330</x>
-     <y>520</y>
+     <x>310</x>
+     <y>530</y>
      <width>121</width>
      <height>27</height>
     </rect>
@@ -614,8 +614,8 @@ keyframe(m.sec):</string>
   <widget class="QPushButton" name="btnLast">
    <property name="geometry">
     <rect>
-     <x>480</x>
-     <y>520</y>
+     <x>450</x>
+     <y>530</y>
      <width>121</width>
      <height>27</height>
     </rect>
@@ -827,19 +827,6 @@ keyframe(m.sec):</string>
       <string>To Frame</string>
      </property>
     </widget>
-    <widget class="QCheckBox" name="chkMultiFrames">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>80</y>
-       <width>141</width>
-       <height>22</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Multiple Frames</string>
-     </property>
-    </widget>
     <widget class="QSpinBox" name="spinDelFrom">
      <property name="geometry">
       <rect>
@@ -941,6 +928,25 @@ keyframe(m.sec):</string>
       <string>Reset</string>
      </property>
     </widget>
+    <widget class="QPushButton" name="btnStopAll">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>170</y>
+       <width>141</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Emergency Stop</string>
+     </property>
+     <property name="checkable">
+      <bool>true</bool>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+    </widget>
    </widget>
   </widget>
   <widget class="QLabel" name="lblFrameCount">
@@ -959,8 +965,8 @@ keyframe(m.sec):</string>
   <widget class="QPushButton" name="btnPlay">
    <property name="geometry">
     <rect>
-     <x>40</x>
-     <y>490</y>
+     <x>50</x>
+     <y>530</y>
      <width>61</width>
      <height>27</height>
     </rect>
@@ -972,8 +978,8 @@ keyframe(m.sec):</string>
   <widget class="QSpinBox" name="spinPlayTo">
    <property name="geometry">
     <rect>
-     <x>170</x>
-     <y>490</y>
+     <x>160</x>
+     <y>530</y>
      <width>91</width>
      <height>27</height>
     </rect>
@@ -983,7 +989,7 @@ keyframe(m.sec):</string>
    <property name="geometry">
     <rect>
      <x>120</x>
-     <y>490</y>
+     <y>540</y>
      <width>31</width>
      <height>17</height>
     </rect>
@@ -996,7 +1002,7 @@ keyframe(m.sec):</string>
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>450</y>
+     <y>490</y>
      <width>98</width>
      <height>27</height>
     </rect>
@@ -1008,8 +1014,8 @@ keyframe(m.sec):</string>
   <widget class="QLabel" name="label_2">
    <property name="geometry">
     <rect>
-     <x>10</x>
-     <y>550</y>
+     <x>380</x>
+     <y>420</y>
      <width>111</width>
      <height>17</height>
     </rect>
@@ -1021,8 +1027,8 @@ keyframe(m.sec):</string>
   <widget class="QLabel" name="lblCurrFrame">
    <property name="geometry">
     <rect>
-     <x>130</x>
-     <y>550</y>
+     <x>500</x>
+     <y>420</y>
      <width>66</width>
      <height>17</height>
     </rect>
@@ -1031,23 +1037,69 @@ keyframe(m.sec):</string>
     <string>1</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="btnStopAll">
+  <widget class="QPushButton" name="btnPrevious">
    <property name="geometry">
     <rect>
-     <x>420</x>
-     <y>580</y>
-     <width>141</width>
-     <height>51</height>
+     <x>360</x>
+     <y>490</y>
+     <width>71</width>
+     <height>27</height>
     </rect>
    </property>
    <property name="text">
-    <string>Emergency Stop</string>
+    <string>Previous</string>
    </property>
-   <property name="checkable">
-    <bool>true</bool>
+  </widget>
+  <widget class="QPushButton" name="btnNext">
+   <property name="geometry">
+    <rect>
+     <x>450</x>
+     <y>490</y>
+     <width>71</width>
+     <height>27</height>
+    </rect>
    </property>
-   <property name="checked">
-    <bool>true</bool>
+   <property name="text">
+    <string>Next</string>
+   </property>
+  </widget>
+  <widget class="Line" name="line">
+   <property name="geometry">
+    <rect>
+     <x>260</x>
+     <y>460</y>
+     <width>20</width>
+     <height>121</height>
+    </rect>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Vertical</enum>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_9">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>580</y>
+     <width>31</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>File:</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lblFile">
+   <property name="geometry">
+    <rect>
+     <x>50</x>
+     <y>580</y>
+     <width>551</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>default.dyn</string>
    </property>
   </widget>
  </widget>
