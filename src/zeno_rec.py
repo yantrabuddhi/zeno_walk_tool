@@ -3,11 +3,13 @@ __author__ = 'mandeep'
 # -*- coding: utf-8 -*-
 import rospy
 import sys
+import pickle
 from PyQt4 import QtCore, QtGui
 from UI_zeno_rec import Ui_zeno_rec
 from dynamixel_controllers.srv import TorqueEnable
 from dynamixel_msgs.msg import JointState as DynamixelJointState
 from itertools import repeat
+from os.path import isfile
 
 
 class StartQT4(QtGui.QMainWindow):
@@ -82,18 +84,18 @@ class StartQT4(QtGui.QMainWindow):
 
         QtCore.QObject.connect(self.ui.btnRec,QtCore.SIGNAL("clicked()"),self.btnRec)
         QtCore.QObject.connect(self.ui.btnDelCurrent,QtCore.SIGNAL("clicked()"),self.btnDelCurrent)
-        # QtCore.QObject.connect(self.ui.btnDel,QtCore.SIGNAL("clicked()"),self.btnDel)
-        # QtCore.QObject.connect(self.ui.btnCopy,QtCore.SIGNAL("clicked()"),self.btnCopy)
-        # QtCore.QObject.connect(self.ui.btnFirst,QtCore.SIGNAL("clicked()"),self.btnFirst)
-        # QtCore.QObject.connect(self.ui.btnLast,QtCore.SIGNAL("clicked()"),self.btnLast)
-        # QtCore.QObject.connect(self.ui.btnPrevious,QtCore.SIGNAL("clicked()"),self.btnPrevious)
-        # QtCore.QObject.connect(self.ui.btnNext,QtCore.SIGNAL("clicked()"),self.btnNext)
-        # QtCore.QObject.connect(self.ui.btnSave,QtCore.SIGNAL("clicked()"),self.btnSave)
+        QtCore.QObject.connect(self.ui.btnDel,QtCore.SIGNAL("clicked()"),self.btnDel)
+        QtCore.QObject.connect(self.ui.btnCopy,QtCore.SIGNAL("clicked()"),self.btnCopy)
+        QtCore.QObject.connect(self.ui.btnInsert,QtCore.SIGNAL("clicked()"),self.btnInsert)
+        QtCore.QObject.connect(self.ui.btnSetFrame,QtCore.SIGNAL("clicked()"),self.btnSetFrame)
+        QtCore.QObject.connect(self.ui.btnFirst,QtCore.SIGNAL("clicked()"),self.btnFirst)
+        QtCore.QObject.connect(self.ui.btnLast,QtCore.SIGNAL("clicked()"),self.btnLast)
+        QtCore.QObject.connect(self.ui.btnPrevious,QtCore.SIGNAL("clicked()"),self.btnPrevious)
+        QtCore.QObject.connect(self.ui.btnNext,QtCore.SIGNAL("clicked()"),self.btnNext)
+        QtCore.QObject.connect(self.ui.btnSave,QtCore.SIGNAL("clicked()"),self.btnSave)
         # QtCore.QObject.connect(self.ui.btnSaveAs,QtCore.SIGNAL("clicked()"),self.btnSaveAs)
         # QtCore.QObject.connect(self.ui.btnLoad,QtCore.SIGNAL("clicked()"),self.btnLoad)
         # QtCore.QObject.connect(self.ui.btnImport,QtCore.SIGNAL("clicked()"),self.btnImport)
-        # QtCore.QObject.connect(self.ui.btnInsert,QtCore.SIGNAL("clicked()"),self.btnInsert)
-        # QtCore.QObject.connect(self.ui.btnSetFrame,QtCore.SIGNAL("clicked()"),self.btnSetFrame)
         # QtCore.QObject.connect(self.ui.btnPlay,QtCore.SIGNAL("clicked()"),self.btnPlay)
 
         rospy.init_node("zeno_walk_tool")
@@ -187,12 +189,23 @@ class StartQT4(QtGui.QMainWindow):
 
     # def btnPlay(self):
     #
-    # def btnSave(self):
-    #
-    # def btnSaveAs(self):
-    #
-    # def btnLoad(self):
-    #
+    def btnSave(self):
+        self.animation=(self.TimeDelayFromPrevious,self.TrajectoryInfo)
+        pickle.dump(self.animation,open(self.ui.lblFile.text(),"wb"))
+
+    def btnSaveAs(self):
+        fd = QtGui.QFileDialog(self)
+        filename = fd.getSaveFileName()
+
+    def btnLoad(self):
+        fd = QtGui.QFileDialog(self)
+        filename = fd.getOpenFileName()
+        if isfile(filename):
+            self.animation=pickle.load(open(filename,"rb"))
+            self.TimeDelayFromPrevious=self.animation[0]
+            self.TrajectoryInfo=self.animation[1]
+            self.ui.lblFile=filename
+            
     # def btnImport(self):
     #
     def btnInsert(self):
