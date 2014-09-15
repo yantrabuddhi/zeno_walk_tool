@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'UI_zeno_rec.ui'
 #
-# Created: Mon Sep 15 19:26:49 2014
+# Created: Mon Sep 15 21:07:20 2014
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -142,9 +142,6 @@ class Ui_zeno_rec(object):
         self.btnLoad = QtGui.QPushButton(zeno_rec)
         self.btnLoad.setGeometry(QtCore.QRect(190, 610, 71, 27))
         self.btnLoad.setObjectName(_fromUtf8("btnLoad"))
-        self.btnImport = QtGui.QPushButton(zeno_rec)
-        self.btnImport.setGeometry(QtCore.QRect(280, 610, 91, 27))
-        self.btnImport.setObjectName(_fromUtf8("btnImport"))
         self.chkAllMotors = QtGui.QCheckBox(zeno_rec)
         self.chkAllMotors.setGeometry(QtCore.QRect(300, 380, 171, 22))
         self.chkAllMotors.setObjectName(_fromUtf8("chkAllMotors"))
@@ -193,9 +190,6 @@ class Ui_zeno_rec(object):
         self.label_5 = QtGui.QLabel(self.groupBox)
         self.label_5.setGeometry(QtCore.QRect(20, 60, 81, 17))
         self.label_5.setObjectName(_fromUtf8("label_5"))
-        self.chkCopyAfter = QtGui.QCheckBox(self.groupBox)
-        self.chkCopyAfter.setGeometry(QtCore.QRect(20, 120, 171, 22))
-        self.chkCopyAfter.setObjectName(_fromUtf8("chkCopyAfter"))
         self.spinCopyStart = QtGui.QSpinBox(self.groupBox)
         self.spinCopyStart.setGeometry(QtCore.QRect(130, 20, 81, 27))
         self.spinCopyStart.setObjectName(_fromUtf8("spinCopyStart"))
@@ -206,8 +200,11 @@ class Ui_zeno_rec(object):
         self.spinCopyTo.setGeometry(QtCore.QRect(130, 80, 81, 27))
         self.spinCopyTo.setObjectName(_fromUtf8("spinCopyTo"))
         self.btnCopy = QtGui.QPushButton(self.groupBox)
-        self.btnCopy.setGeometry(QtCore.QRect(240, 110, 98, 27))
+        self.btnCopy.setGeometry(QtCore.QRect(20, 120, 98, 27))
         self.btnCopy.setObjectName(_fromUtf8("btnCopy"))
+        self.btnImport = QtGui.QPushButton(self.groupBox)
+        self.btnImport.setGeometry(QtCore.QRect(250, 20, 91, 27))
+        self.btnImport.setObjectName(_fromUtf8("btnImport"))
         self.label_6 = QtGui.QLabel(zeno_rec)
         self.label_6.setGeometry(QtCore.QRect(10, 380, 91, 17))
         self.label_6.setObjectName(_fromUtf8("label_6"))
@@ -251,11 +248,9 @@ class Ui_zeno_rec(object):
         self.btnResetWatch = QtGui.QPushButton(self.groupBox_3)
         self.btnResetWatch.setGeometry(QtCore.QRect(250, 40, 71, 27))
         self.btnResetWatch.setObjectName(_fromUtf8("btnResetWatch"))
-        self.btnStopAll = QtGui.QPushButton(self.groupBox_3)
-        self.btnStopAll.setGeometry(QtCore.QRect(20, 170, 141, 51))
-        self.btnStopAll.setCheckable(True)
-        self.btnStopAll.setChecked(True)
-        self.btnStopAll.setObjectName(_fromUtf8("btnStopAll"))
+        self.btnPrintCurrent = QtGui.QPushButton(self.groupBox_3)
+        self.btnPrintCurrent.setGeometry(QtCore.QRect(30, 190, 98, 27))
+        self.btnPrintCurrent.setObjectName(_fromUtf8("btnPrintCurrent"))
         self.lblFrameCount = QtGui.QLabel(zeno_rec)
         self.lblFrameCount.setGeometry(QtCore.QRect(130, 380, 66, 17))
         self.lblFrameCount.setObjectName(_fromUtf8("lblFrameCount"))
@@ -294,6 +289,11 @@ class Ui_zeno_rec(object):
         self.lblFile = QtGui.QLabel(zeno_rec)
         self.lblFile.setGeometry(QtCore.QRect(50, 580, 551, 17))
         self.lblFile.setObjectName(_fromUtf8("lblFile"))
+        self.btnStopAll = QtGui.QPushButton(zeno_rec)
+        self.btnStopAll.setGeometry(QtCore.QRect(360, 580, 141, 51))
+        self.btnStopAll.setCheckable(True)
+        self.btnStopAll.setChecked(True)
+        self.btnStopAll.setObjectName(_fromUtf8("btnStopAll"))
 
         self.retranslateUi(zeno_rec)
         QtCore.QMetaObject.connectSlotsByName(zeno_rec)
@@ -335,7 +335,6 @@ class Ui_zeno_rec(object):
         self.btnSave.setText(_translate("zeno_rec", "Save", None))
         self.btnSaveAs.setText(_translate("zeno_rec", "Save As", None))
         self.btnLoad.setText(_translate("zeno_rec", "Load", None))
-        self.btnImport.setText(_translate("zeno_rec", "Import", None))
         self.chkAllMotors.setText(_translate("zeno_rec", "Torque for All Motors", None))
         self.label.setText(_translate("zeno_rec", "Elapse from previous\n"
 "keyframe(m.sec):", None))
@@ -348,8 +347,8 @@ class Ui_zeno_rec(object):
         self.label_3.setText(_translate("zeno_rec", "Start Frame", None))
         self.label_4.setText(_translate("zeno_rec", "To Frame", None))
         self.label_5.setText(_translate("zeno_rec", "Stop Frame", None))
-        self.chkCopyAfter.setText(_translate("zeno_rec", "Insert After To Frame", None))
         self.btnCopy.setText(_translate("zeno_rec", "Copy", None))
+        self.btnImport.setText(_translate("zeno_rec", "Import", None))
         self.label_6.setText(_translate("zeno_rec", "Total Frames:", None))
         self.groupBox_2.setTitle(_translate("zeno_rec", "Delete", None))
         self.label_7.setText(_translate("zeno_rec", "From Frame", None))
@@ -359,7 +358,7 @@ class Ui_zeno_rec(object):
         self.chkStopWatch.setText(_translate("zeno_rec", "Start Stopwatch", None))
         self.lblWatch.setText(_translate("zeno_rec", "00000", None))
         self.btnResetWatch.setText(_translate("zeno_rec", "Reset", None))
-        self.btnStopAll.setText(_translate("zeno_rec", "Emergency Stop", None))
+        self.btnPrintCurrent.setText(_translate("zeno_rec", "Print Current", None))
         self.lblFrameCount.setText(_translate("zeno_rec", "1", None))
         self.btnPlay.setText(_translate("zeno_rec", "Play", None))
         self.label_10.setText(_translate("zeno_rec", "To", None))
@@ -370,4 +369,5 @@ class Ui_zeno_rec(object):
         self.btnNext.setText(_translate("zeno_rec", "Next", None))
         self.label_9.setText(_translate("zeno_rec", "File:", None))
         self.lblFile.setText(_translate("zeno_rec", "default.dyn", None))
+        self.btnStopAll.setText(_translate("zeno_rec", "Emergency Stop", None))
 
