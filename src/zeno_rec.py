@@ -131,13 +131,13 @@ class StartQT4(QtGui.QMainWindow):
         else:
             self.ui.btnPrevious.setEnabled(True)
 
-        self.ui.lblCurrFrame=str(self.currentFrame)
-        self.ui.lblFrameCount=str(self.totalFrames)
+        self.ui.lblCurrFrame.setText(str(self.currentFrame))
+        self.ui.lblFrameCount.setText(str(self.totalFrames))
 
     def btnRec(self):
-        self.TimeDelayFromPrevious[self.currentFrame]=self.ui.spinDelay.value()
+        self.TimeDelayFromPrevious[self.currentFrame-1]=self.ui.spinDelay.value()
         for name in self.names:
-            self.TrajectoryInfo[name][self.currentFrame]=self.joint_positions[self.nameAndIdIndex[name]-1]
+            self.TrajectoryInfo[name][self.currentFrame-1]=self.joint_positions[self.nameAndIdIndex[name]-1]
 
     def btnDelCurrent(self):
         if self.totalFrames>1:
@@ -222,6 +222,7 @@ class StartQT4(QtGui.QMainWindow):
             self.TimeDelayFromPrevious=self.animation[0]
             self.TrajectoryInfo=self.animation[1]
             self.ui.lblFile=filename
+            self.setFrameBtnState()
             
     def btnImport(self):
         fd = QtGui.QFileDialog(self)
