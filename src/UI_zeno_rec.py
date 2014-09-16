@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'UI_zeno_rec.ui'
 #
-# Created: Tue Sep 16 11:56:59 2014
+# Created: Tue Sep 16 14:22:45 2014
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -143,7 +143,7 @@ class Ui_zeno_rec(object):
         self.btnLoad.setGeometry(QtCore.QRect(190, 610, 71, 27))
         self.btnLoad.setObjectName(_fromUtf8("btnLoad"))
         self.chkAllMotors = QtGui.QCheckBox(zeno_rec)
-        self.chkAllMotors.setGeometry(QtCore.QRect(170, 380, 171, 22))
+        self.chkAllMotors.setGeometry(QtCore.QRect(220, 380, 171, 22))
         self.chkAllMotors.setObjectName(_fromUtf8("chkAllMotors"))
         self.label = QtGui.QLabel(zeno_rec)
         self.label.setGeometry(QtCore.QRect(10, 400, 141, 41))
@@ -171,7 +171,7 @@ class Ui_zeno_rec(object):
         self.btnLast.setGeometry(QtCore.QRect(450, 530, 121, 27))
         self.btnLast.setObjectName(_fromUtf8("btnLast"))
         self.btnRec = QtGui.QPushButton(zeno_rec)
-        self.btnRec.setGeometry(QtCore.QRect(390, 380, 101, 27))
+        self.btnRec.setGeometry(QtCore.QRect(440, 380, 101, 27))
         self.btnRec.setObjectName(_fromUtf8("btnRec"))
         self.frame = QtGui.QFrame(zeno_rec)
         self.frame.setGeometry(QtCore.QRect(620, 20, 381, 171))

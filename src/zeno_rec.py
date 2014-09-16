@@ -11,6 +11,12 @@ from dynamixel_msgs.msg import JointState as DynamixelJointState
 from itertools import repeat
 from os.path import isfile
 
+#for play
+import actionlib
+from trajectory_msgs.msg import JointTrajectory
+from trajectory_msgs.msg import JointTrajectoryPoint
+from control_msgs.msg import FollowJointTrajectoryAction
+from control_msgs.msg import FollowJointTrajectoryGoal
 
 class StartQT4(QtGui.QMainWindow):
     numMotors=12
@@ -29,7 +35,10 @@ class StartQT4(QtGui.QMainWindow):
     # motorPositionTopics=[]#List
     # motorTorqueServices=[]#List
     # motorTorqueStates=[]#bool List
-    motorTrajectoryTopics=[]#dictionary category:TrajectoryTopic
+    motorTrajectoryTopics={#+goal,feedback
+        'l':'/left_leg_controller/follow_joint_trajectory',
+        'r':'/right_leg_controller/follow_joint_trajectory'
+    }#dictionary category:TrajectoryTopic
 
     totalFrames=1
     currentFrame=1
@@ -99,13 +108,12 @@ class StartQT4(QtGui.QMainWindow):
         QtCore.QObject.connect(self.ui.btnLoad,QtCore.SIGNAL("clicked()"),self.btnLoad)
         QtCore.QObject.connect(self.ui.btnPrintCurrent,QtCore.SIGNAL("clicked()"),self.btnPrintCurrent)
         QtCore.QObject.connect(self.ui.btnImport,QtCore.SIGNAL("clicked()"),self.btnImport)
-        # QtCore.QObject.connect(self.ui.btnPlay,QtCore.SIGNAL("clicked()"),self.btnPlay)
+        QtCore.QObject.connect(self.ui.btnPlay,QtCore.SIGNAL("clicked()"),self.btnPlay)
 
         rospy.init_node("zeno_walk_tool")
 
         self.joint_positions = list(repeat(0.0, 12))
         self.joint_velocities = list(repeat(0.0, 12))
-        # self.motorTorqueStates=list(repeat(False,12))
         for name in self.names:
             controller = name + '_controller/state'
             rospy.loginfo(controller)
@@ -209,8 +217,54 @@ class StartQT4(QtGui.QMainWindow):
     def btnPrintCurrent(self):
         self.printFrame(self.currentFrame)
 
-    # def btnPlay(self):
-    #
+    def btnPlay(self):
+        if not self.ui.chkAllMotors.isChecked():
+            print("all motors should have torque")
+            return
+        if self.ui.spinSetFrame.value()>self.ui.spinPlayTo.value() or self.ui.spinSetFrame.value()<1 or self.ui.spinPlayTo.value()>self.totalFrames:
+            print("\nwrong range in play\n")
+            return
+
+        trajectories=[]
+        for cat in self.motorTrajectoryTopics:
+            jointTraj=JointTrajectory()
+            jts_names=[]
+            for name in self.names:
+                if self.motorNamesAndCat[name]==cat:
+                    jointTraj.joint_names.append(name+"_joint")
+                    jts_names.append(name)
+
+            fcount=self.ui.spinPlayTo.value()-self.ui.spinSetFrame.value()+1
+            totalDelay=0.0
+            for n in range(0,fcount):
+                pos_arr=JointTrajectoryPoint()
+                readLoc=n+self.ui.spinSetFrame.value()
+                delaySecs=float(self.TimeDelayFromPrevious[readLoc-1])/1000.0
+                totalDelay=totalDelay+delaySecs
+                pos_arr.time_from_start=rospy.Duration(totalDelay)
+                for name in jts_names:
+                    pos_arr.positions.append(self.TrajectoryInfo[name][readLoc-1])
+                    velocity=6.2#2*pi rad/sec
+                    if n!=0:
+                        velocity=float(self.TrajectoryInfo[name][readLoc-1]-self.TrajectoryInfo[name][readLoc-2])/delaySecs
+                    pos_arr.velocities.append(velocity)
+                jointTraj.points.append(pos_arr)
+                jointTraj.header.stamp=rospy.Time.now()
+                trajectories.append(jointTraj)
+
+        trajClients=[]
+        for cat in self.motorTrajectoryTopics:
+            trajClients.append(actionlib.SimpleActionClient(self.motorTrajectoryTopics[cat],FollowJointTrajectoryAction))
+            #trajectories[nn] .. how to send this goal
+
+        nn=0
+        for traj in trajClients:
+            goal=FollowJointTrajectoryGoal()
+            goal.trajectory=trajectories[nn]
+            traj.send_goal(goal)
+            nn=nn+1
+
+
     def btnSave(self):
         self.animation=(self.TimeDelayFromPrevious,self.TrajectoryInfo)
         pickle.dump(self.animation,open(self.ui.lblFile.text(),"wb"))

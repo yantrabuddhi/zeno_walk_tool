@@ -503,7 +503,7 @@
   <widget class="QCheckBox" name="chkAllMotors">
    <property name="geometry">
     <rect>
-     <x>170</x>
+     <x>220</x>
      <y>380</y>
      <width>171</width>
      <height>22</height>
@@ -614,7 +614,7 @@ keyframe(m.sec):</string>
   <widget class="QPushButton" name="btnRec">
    <property name="geometry">
     <rect>
-     <x>390</x>
+     <x>440</x>
      <y>380</y>
      <width>101</width>
      <height>27</height>
