@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'UI_zeno_rec.ui'
 #
-# Created: Mon Sep 15 22:12:09 2014
+# Created: Tue Sep 16 11:56:59 2014
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -143,13 +143,13 @@ class Ui_zeno_rec(object):
         self.btnLoad.setGeometry(QtCore.QRect(190, 610, 71, 27))
         self.btnLoad.setObjectName(_fromUtf8("btnLoad"))
         self.chkAllMotors = QtGui.QCheckBox(zeno_rec)
-        self.chkAllMotors.setGeometry(QtCore.QRect(300, 380, 171, 22))
+        self.chkAllMotors.setGeometry(QtCore.QRect(170, 380, 171, 22))
         self.chkAllMotors.setObjectName(_fromUtf8("chkAllMotors"))
         self.label = QtGui.QLabel(zeno_rec)
-        self.label.setGeometry(QtCore.QRect(20, 410, 141, 41))
+        self.label.setGeometry(QtCore.QRect(10, 400, 141, 41))
         self.label.setObjectName(_fromUtf8("label"))
         self.spinDelay = QtGui.QSpinBox(zeno_rec)
-        self.spinDelay.setGeometry(QtCore.QRect(180, 420, 71, 27))
+        self.spinDelay.setGeometry(QtCore.QRect(170, 410, 71, 27))
         self.spinDelay.setMinimum(40)
         self.spinDelay.setMaximum(2000)
         self.spinDelay.setSingleStep(100)
@@ -171,7 +171,7 @@ class Ui_zeno_rec(object):
         self.btnLast.setGeometry(QtCore.QRect(450, 530, 121, 27))
         self.btnLast.setObjectName(_fromUtf8("btnLast"))
         self.btnRec = QtGui.QPushButton(zeno_rec)
-        self.btnRec.setGeometry(QtCore.QRect(500, 380, 101, 27))
+        self.btnRec.setGeometry(QtCore.QRect(390, 380, 101, 27))
         self.btnRec.setObjectName(_fromUtf8("btnRec"))
         self.frame = QtGui.QFrame(zeno_rec)
         self.frame.setGeometry(QtCore.QRect(620, 20, 381, 171))
@@ -267,10 +267,10 @@ class Ui_zeno_rec(object):
         self.btnSetFrame.setGeometry(QtCore.QRect(10, 490, 98, 27))
         self.btnSetFrame.setObjectName(_fromUtf8("btnSetFrame"))
         self.label_2 = QtGui.QLabel(zeno_rec)
-        self.label_2.setGeometry(QtCore.QRect(380, 420, 111, 17))
+        self.label_2.setGeometry(QtCore.QRect(390, 420, 111, 17))
         self.label_2.setObjectName(_fromUtf8("label_2"))
         self.lblCurrFrame = QtGui.QLabel(zeno_rec)
-        self.lblCurrFrame.setGeometry(QtCore.QRect(500, 420, 66, 17))
+        self.lblCurrFrame.setGeometry(QtCore.QRect(510, 420, 66, 17))
         self.lblCurrFrame.setObjectName(_fromUtf8("lblCurrFrame"))
         self.btnPrevious = QtGui.QPushButton(zeno_rec)
         self.btnPrevious.setGeometry(QtCore.QRect(360, 490, 71, 27))
@@ -294,6 +294,9 @@ class Ui_zeno_rec(object):
         self.btnStopAll.setCheckable(True)
         self.btnStopAll.setChecked(True)
         self.btnStopAll.setObjectName(_fromUtf8("btnStopAll"))
+        self.btnRecDelay = QtGui.QPushButton(zeno_rec)
+        self.btnRecDelay.setGeometry(QtCore.QRect(260, 410, 98, 27))
+        self.btnRecDelay.setObjectName(_fromUtf8("btnRecDelay"))
 
         self.retranslateUi(zeno_rec)
         QtCore.QMetaObject.connectSlotsByName(zeno_rec)
@@ -370,4 +373,5 @@ class Ui_zeno_rec(object):
         self.label_9.setText(_translate("zeno_rec", "File:", None))
         self.lblFile.setText(_translate("zeno_rec", "default.dyn", None))
         self.btnStopAll.setText(_translate("zeno_rec", "Emergency Stop", None))
+        self.btnRecDelay.setText(_translate("zeno_rec", "Rec Delay", None))
 

@@ -61,6 +61,7 @@ class StartQT4(QtGui.QMainWindow):
         QtCore.QObject.connect(self.ui.chkAllMotors,QtCore.SIGNAL("toggled(bool)"),self.chkAllMotors)
         QtCore.QObject.connect(self.ui.btnStopAll,QtCore.SIGNAL("toggled(bool)"),self.stopAll)
 
+        self.ui.lblFile.setText("default.dyn")
         self.ui.btnRec.setEnabled(self.ui.chkAllMotors.isChecked())
         self.totalFrames=0
         self.currentFrame=0
@@ -83,6 +84,7 @@ class StartQT4(QtGui.QMainWindow):
         self.ui.chkLA.setEnabled(False)
 
         QtCore.QObject.connect(self.ui.btnRec,QtCore.SIGNAL("clicked()"),self.btnRec)
+        QtCore.QObject.connect(self.ui.btnRecDelay,QtCore.SIGNAL("clicked()"),self.btnRecDelay)
         QtCore.QObject.connect(self.ui.btnDelCurrent,QtCore.SIGNAL("clicked()"),self.btnDelCurrent)
         QtCore.QObject.connect(self.ui.btnDel,QtCore.SIGNAL("clicked()"),self.btnDel)
         QtCore.QObject.connect(self.ui.btnCopy,QtCore.SIGNAL("clicked()"),self.btnCopy)
@@ -133,11 +135,15 @@ class StartQT4(QtGui.QMainWindow):
 
         self.ui.lblCurrFrame.setText(str(self.currentFrame))
         self.ui.lblFrameCount.setText(str(self.totalFrames))
+        self.ui.spinDelay.setValue(self.TimeDelayFromPrevious[self.currentFrame-1])
 
     def btnRec(self):
         self.TimeDelayFromPrevious[self.currentFrame-1]=self.ui.spinDelay.value()
         for name in self.names:
             self.TrajectoryInfo[name][self.currentFrame-1]=self.joint_positions[self.nameAndIdIndex[name]-1]
+
+    def btnRecDelay(self):
+        self.TimeDelayFromPrevious[self.currentFrame-1]=self.ui.spinDelay.value()
 
     def btnDelCurrent(self):
         if self.totalFrames>1:
@@ -224,7 +230,7 @@ class StartQT4(QtGui.QMainWindow):
             self.animation=pickle.load(open(filename,"rb"))
             self.TimeDelayFromPrevious=self.animation[0]
             self.TrajectoryInfo=self.animation[1]
-            self.ui.lblFile=filename
+            self.ui.lblFile.setText(filename)
             self.setFrameBtnState()
             
     def btnImport(self):
