@@ -253,16 +253,22 @@ class StartQT4(QtGui.QMainWindow):
                 trajectories.append(jointTraj)
 
         trajClients=[]
+        mm=0
         for cat in self.motorTrajectoryTopics:
             trajClients.append(actionlib.SimpleActionClient(self.motorTrajectoryTopics[cat],FollowJointTrajectoryAction))
+            trajClients[mm].wait_for_server()
+            mm=mm+1
             #trajectories[nn] .. how to send this goal
 
         nn=0
         for traj in trajClients:
             goal=FollowJointTrajectoryGoal()
+            #goal.trajectory.points=trajectories[nn].points
             goal.trajectory=trajectories[nn]
             traj.send_goal(goal)
             nn=nn+1
+
+        print ("\nDone Sending Play Info...\n")
 
 
     def btnSave(self):
