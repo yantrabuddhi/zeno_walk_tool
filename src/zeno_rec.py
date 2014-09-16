@@ -141,21 +141,23 @@ class StartQT4(QtGui.QMainWindow):
 
     def btnDelCurrent(self):
         if self.totalFrames>1:
-            self.TimeDelayFromPrevious.remove(self.currentFrame-1)#assuming frames start from 1 to n
+            del self.TimeDelayFromPrevious[self.currentFrame-1]#assuming frames start from 1 to n
+            #self.TimeDelayFromPrevious.remove(self.currentFrame-1)#assuming frames start from 1 to n
             for name in self.names:
-                self.TrajectoryInfo[name].remove(self.currentFrame-1)
+                del self.TrajectoryInfo[name][self.currentFrame-1]
+                #self.TrajectoryInfo[name].remove(self.currentFrame-1)
             self.totalFrames=self.totalFrames-1
             self.setFrameBtnState()
 
     def btnDel(self):
         fcount=self.ui.spinDelTo.value()-self.ui.spinDelFrom.value()+1
-        if fcount<1:
+        if fcount<1 or fcount>=self.totalFrames:
             return
         if self.totalFrames>fcount and self.ui.spinDelFrom.value()>=1 and self.ui.spinDelTo.value()<=self.totalFrames:
-            for n in range(self.ui.spinDelTo.value(),self.ui.spinDelTo.value()+1,1):
-                self.TimeDelayFromPrevious.remove(n-1)#assuming frames start from 1 to n
+            for n in range(self.ui.spinDelFrom.value(),self.ui.spinDelTo.value()+1,1):
+                del self.TimeDelayFromPrevious[self.ui.spinDelFrom.value()-1]#assuming frames start from 1 to n
                 for name in self.names:
-                    self.TrajectoryInfo[name].remove(n-1)
+                    del self.TrajectoryInfo[name][self.ui.spinDelFrom.value()-1]
             self.totalFrames=self.totalFrames-fcount
             self.setFrameBtnState()
 
@@ -170,23 +172,24 @@ class StartQT4(QtGui.QMainWindow):
             tempDelayArr=[]
             tempTraj={}
             for name in self.names:
-                tempTraj[name]=[]#pos
+                tempTraj[name]=[]#list(repeat(0.0,self.ui.spinCopyStop.value()-self.ui.spinCopyStart.value()+1))#pos
 
             for n in range(self.ui.spinCopyStart.value(),self.ui.spinCopyStop.value()+1,1):
                 tempDelayArr.append(self.TimeDelayFromPrevious[n-1])
                 for name in self.names:
-                    tempTraj[name][n-self.ui.spinCopyStart.value()]=self.TrajectoryInfo[name][n]
+                    tempTraj[name].append(self.TrajectoryInfo[name][n-1])
+                    #tempTraj[name][n-self.ui.spinCopyStart.value()]=self.TrajectoryInfo[name][n-1]
 
             for n in range(0,self.ui.spinCopyStop.value()-self.ui.spinCopyStart.value()+1,1):
-                newLoc=self.ui.spinCopyTo+n
+                newLoc=self.ui.spinCopyTo.value()+n
                 if newLoc>self.totalFrames:
                     self.TimeDelayFromPrevious.append(tempDelayArr[n])
                     for name in self.names:
-                        self.TrajectoryInfo[name].append(tempTraj[n])
+                        self.TrajectoryInfo[name].append(tempTraj[name][n])
                 else:
-                    self.TimeDelayFromPrevious[newLoc]=tempDelayArr[n]
+                    self.TimeDelayFromPrevious[newLoc-1]=tempDelayArr[n]
                     for name in self.names:
-                        self.TrajectoryInfo[name][newLoc]=tempTraj[name][n]
+                        self.TrajectoryInfo[name][newLoc-1]=tempTraj[name][n]
             self.setFrameBtnState()
 
 
@@ -243,15 +246,15 @@ class StartQT4(QtGui.QMainWindow):
                 #    tempTraj[name]=[]#pos
 
                 for n in range(0,self.ui.spinCopyStop.value()-self.ui.spinCopyStart.value()+1,1):
-                    newLoc=self.ui.spinCopyTo+n
+                    newLoc=self.ui.spinCopyTo.value()+n
                     if newLoc>self.totalFrames:
                         self.TimeDelayFromPrevious.append(tempDelayArr[n])
                         for name in self.names:
-                            self.TrajectoryInfo[name].append(tempTraj[n])
+                            self.TrajectoryInfo[name].append(tempTraj[name][n])
                     else:
-                        self.TimeDelayFromPrevious[newLoc]=tempDelayArr[n]
+                        self.TimeDelayFromPrevious[newLoc-1]=tempDelayArr[n]
                         for name in self.names:
-                            self.TrajectoryInfo[name][newLoc]=tempTraj[name][n]
+                            self.TrajectoryInfo[name][newLoc-1]=tempTraj[name][n]
                 self.setFrameBtnState()
 
     def btnInsert(self):
