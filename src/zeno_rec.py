@@ -241,7 +241,7 @@ class StartQT4(QtGui.QMainWindow):
                 readLoc=n+self.ui.spinSetFrame.value()
                 delaySecs=float(self.TimeDelayFromPrevious[readLoc-1])/1000.0
                 totalDelay=totalDelay+delaySecs
-                pos_arr.time_from_start=rospy.Duration(totalDelay)
+                pos_arr.time_from_start=rospy.Duration().from_sec(totalDelay)
                 for name in jts_names:
                     pos_arr.positions.append(self.TrajectoryInfo[name][readLoc-1])
                     velocity=6.2#2*pi rad/sec
@@ -249,8 +249,8 @@ class StartQT4(QtGui.QMainWindow):
                         velocity=float(self.TrajectoryInfo[name][readLoc-1]-self.TrajectoryInfo[name][readLoc-2])/delaySecs
                     pos_arr.velocities.append(velocity)
                 jointTraj.points.append(pos_arr)
-                jointTraj.header.stamp=rospy.Time.now()
-                trajectories.append(jointTraj)
+            jointTraj.header.stamp=rospy.Time.now()
+            trajectories.append(jointTraj)
 
         trajClients=[]
         mm=0
