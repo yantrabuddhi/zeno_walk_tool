@@ -230,6 +230,7 @@ class StartQT4(QtGui.QMainWindow):
             jointTraj=JointTrajectory()
             jts_names=[]
             for name in self.names:
+                #if self.motorNamesAndCat[name]==cat and name!='l_hip_yaw':
                 if self.motorNamesAndCat[name]==cat:
                     jointTraj.joint_names.append(name+"_joint")
                     jts_names.append(name)
@@ -244,7 +245,8 @@ class StartQT4(QtGui.QMainWindow):
                 pos_arr.time_from_start=rospy.Duration().from_sec(totalDelay)
                 for name in jts_names:
                     pos_arr.positions.append(self.TrajectoryInfo[name][readLoc-1])
-                    velocity=6.2#2*pi rad/sec
+                    print("\n "+name+": "+str(self.TrajectoryInfo[name][readLoc-1]))
+                    velocity=1.0#2*pi rad/sec
                     if n!=0:
                         velocity=float(self.TrajectoryInfo[name][readLoc-1]-self.TrajectoryInfo[name][readLoc-2])/delaySecs
                     pos_arr.velocities.append(velocity)
