@@ -114,6 +114,8 @@ class StartQT4(QtGui.QMainWindow):
 
         self.joint_positions = list(repeat(0.0, 12))
         self.joint_velocities = list(repeat(0.0, 12))
+        self.joint_loads = list(repeat(0.0, 12))
+        self.joint_temperatures = list(repeat(0.0, 12))
         for name in self.names:
             controller = name + '_controller/state'
             rospy.loginfo(controller)
@@ -124,8 +126,11 @@ class StartQT4(QtGui.QMainWindow):
     def update_dynamixel_joint_state(self, msg):
         joint_index = msg.motor_ids[0] - 1
         self.joint_positions[joint_index] = msg.current_pos
+        self.joint_loads[joint_index] = msg.load
+        self.joint_temperatures[joint_index] = msg.motor_temps[0]
+
         # self.joint_velocities[joint_index] = msg.velocity
-        # print(str(joint_index)+":"+str(self.joint_positions[joint_index])+"\n")
+        # print(str(joint_index)+":"+str(self.joint_positions[joint_index])+" .. load="+str(msg.load)+"\n")
 
     def setFrameBtnState(self):
         self.totalFrames=len(self.TimeDelayFromPrevious)
@@ -212,7 +217,8 @@ class StartQT4(QtGui.QMainWindow):
         print("\nPrevious Delay(ms)="+str(self.TimeDelayFromPrevious[n-1])+"\n")
         print("motor positions(radians):\n")
         for name in self.names:
-            print(name+": "+str(self.TrajectoryInfo[name][n-1])+"\n")
+            print(name+": "+str(self.TrajectoryInfo[name][n-1])+" .. load="+str(self.joint_loads[self.nameAndIdIndex[name]-1]) +"\n")
+            print ("Temprature:"+str(self.joint_temperatures[self.nameAndIdIndex[name]-1]) +"\n")
 
     def btnPrintCurrent(self):
         self.printFrame(self.currentFrame)
@@ -249,7 +255,7 @@ class StartQT4(QtGui.QMainWindow):
                     velocity=1.0#2*pi rad/sec
                     if n!=0:
                         velocity=float(self.TrajectoryInfo[name][readLoc-1]-self.TrajectoryInfo[name][readLoc-2])/delaySecs
-                    pos_arr.velocities.append(velocity)
+                    ##pos_arr.velocities.append(velocity)
                 jointTraj.points.append(pos_arr)
             jointTraj.header.stamp=rospy.Time.now()
             trajectories.append(jointTraj)
