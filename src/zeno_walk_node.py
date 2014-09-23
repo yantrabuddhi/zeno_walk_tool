@@ -43,12 +43,11 @@ class zeno_walk:
     }
 
     def __init__(self):
-        print "lol"
         rospy.init_node('zeno_walk_node')
-        self.anim_dir=rospy.get_param('animations_directory','')
+        self.anim_dir=rospy.get_param('~animations_directory','')
         self.setAllTorque(True)
         self.play(self.animation_map['walk_forward'],1)
-        sub=rospy.Subscriber('/zeno_walk_command',String,self.callback)
+        rospy.Subscriber('/zeno_walk_command',String,self.callback)
 
     def callback(self,data):
         if data.data in self.names:
@@ -68,7 +67,7 @@ class zeno_walk:
 
     def play(self,fileName,fix_frame=0):
         filename=self.anim_dir+fileName
-        print("\n"+filename+"\n")
+        print("\nOpening File:"+filename+"\n")
         if isfile(filename):
             self.animation=pickle.load(open(filename,"rb"))
             self.TimeDelayFromPrevious=self.animation[0]
