@@ -50,7 +50,9 @@ class zeno_walk:
         rospy.Subscriber('/zeno_walk_command',String,self.callback)
 
     def callback(self,data):
-        if data.data in self.names:
+        print("in callback")
+        if data.data in self.animation_map:
+            print("calling play")
             self.play(self.animation_map[data.data],0)
 
     def setAllTorque(self,stt):
