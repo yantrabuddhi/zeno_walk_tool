@@ -1,0 +1,5 @@
+<launch>
+    <node pkg="zeno_walk_tool" type="zeno_walk_node.py" name="zeno_walk_node" output="screen">
+        <param name="animations_directory" value="$(find zeno_walk_tool)/src/" />
+    </node>
+</launch>
